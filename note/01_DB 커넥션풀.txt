@@ -1,0 +1,52 @@
+01_DB 커넥션풀.txt
+
+  # DBCP (DBCP, Database Connection Pool)
+  
+   - 요청이 올 때마다 새로운 DB와의 연결을 만드는 것이 오래 걸리기 때문에 만들어진 개념
+   - 서버를 켤 때 DB와의 연결들을 미리 만들어두고 요청이 올 때마다 빌려주는 방식
+   - 매번 데이터베이스에 새로운 연결을 맺는 것은 서버에 큰 부담을 주기 때문에
+     커넥션 풀을 사용하면 연결하는 시간을 생략할 수 있어 서버 성능 향상에 큰 도움이 된다.
+
+  # 유명한 자바 DBCP 라이브러리들
+  
+   - Apache Commons DBCP
+   - HikariCP
+   - ...
+   
+  # HikariCP Github
+   
+   - https://github.com/brettwooldridge/HikariCP 
+   
+  # HikariCP maven dependency
+
+	<dependency>
+	   <groupId>com.zaxxer</groupId>
+	   <artifactId>HikariCP</artifactId>
+	   <version>5.0.1</version>
+	</dependency>
+  
+  # HikariCP DataSource 생성 예제 (자바 코드)
+  
+	HikariConfig config = new HikariConfig();
+	config.setJdbcUrl("jdbc:mysql://localhost:3306/simpsons");
+	config.setUsername("bart");
+	config.setPassword("51mp50n");
+	config.addDataSourceProperty("cachePrepStmts", "true");
+	config.addDataSourceProperty("prepStmtCacheSize", "250");
+	config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+	
+	HikariDataSource ds = new HikariDataSource(config);
+  
+  # HikariCP 빈으로 등록하기 (root-context.xml)
+  
+  	<bean id="config" class="com.zaxxer.hikari.HikariConfig">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+		<property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:XE"/>
+		<property name="username" value="hr"/>
+		<property name="password" value="1234"/>
+	</bean>
+	
+	<bean class="com.zaxxer.hikari.HikariDataSource">
+		<constructor-arg ref="config" />
+	</bean>
+  

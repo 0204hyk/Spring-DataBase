@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ezen.springdb.mapper.EmployeeXmlMapper">
+	<select id="getAll" resultType="com.ezen.springdb.dto.Employee">
+		SELECT * FROM employees
+	</select>
+	<select id="get" resultType="com.ezen.springdb.dto.Employee">
+		SELECT * FROM employees WHERE employee_id = #{employee_id}
+	</select>
+	<select id="getLessSalary" resultType="com.ezen.springdb.dto.Employee">
+		SELECT * FROM employees WHERE salary <![CDATA[<]]> #{salary}
+	</select>
+	<select id="getLastId" resultType="int">
+		SELECT MAX(employee_id) FROM employees
+	</select>
+	<insert id="insert" parameterType="com.ezen.springdb.dto.Employee">
+		<selectKey keyProperty="employee_id" order="BEFORE" resultType="int">
+			SELECT employees_seq.nextval FROM dual
+		</selectKey>
+		INSERT INTO employees VALUES (
+			#{employee_id}, <!-- 위 selectKey에서 설정한 값 -->
+			#{first_name},
+			#{last_name},
+			#{email},
+			#{phone_number},
+			#{hire_date},
+			#{job_id},
+			#{salary},
+			#{commission_pct},
+			#{manager_id},
+			#{department_id}
+		)
+	</insert>
+</mapper>

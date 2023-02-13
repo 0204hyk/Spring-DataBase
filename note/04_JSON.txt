@@ -1,0 +1,41 @@
+04_JSON.txt
+
+  # JSON
+  
+   - JavaScript Object Notation
+   - 언제든지 자바스크립트 오브젝트로 변환할 수 있는 문자열
+   - 언어에 종속되어있지 않은 하나의 규격
+   
+
+  # JSON을 자바에서 사용하기
+  
+	<dependency>
+	    <groupId>com.googlecode.json-simple</groupId>
+	    <artifactId>json-simple</artifactId>
+	    <version>1.1.1</version>
+	</dependency>
+  
+  
+  # JSONObject 클래스
+  
+   - 자바스크립트 오브젝트 클래스, {}
+   - 해당 객체에 데이터를 put(K, V)할 수 있다.
+  
+  # JSONArray 클래스
+  
+   - 자바스크립트 배열 클래스, []
+   - 해당 객체에 데이터를 add(V)할 수 있다.
+   
+  # JSONParser 클래스
+  
+   - JSON 형태의 문자열을 JSONObject로 변환해주는 기능이 구현된 클래스
+   
+  # JSONobject.toJSONString() 메서드
+  
+   - JSONObject를 JSON 형태의 문자열로 변환하는 메서드
+   - 자바의 Map타입을 JSON 형태의 문자열로 변환할 수도 있다.
+   
+   
+   
+   
+   

@@ -1,0 +1,59 @@
+05_Log4jdbc.txt
+
+  # Log4jdbc
+  
+   - jdbc에서 발생하는 로그들을 아주 보기좋게 찍어주는 라이브러리
+   - 디버깅 할 때 매우 유용하다.
+   
+  # 설정 순서
+  
+   1. pom.xml에 등록
+   
+   		<dependency>
+		    <groupId>org.bgee.log4jdbc-log4j2</groupId>
+		    <artifactId>log4jdbc-log4j2-jdbc4.1</artifactId>
+		    <version>1.16</version>
+		</dependency>
+
+   2. root-context의 driverClassName, jdbcUrl을 수정
+   
+   		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"/>
+		<property name="jdbcUrl" value="jdbc:log4jdbc:oracle:thin:@localhost:1521:XE"/>   
+   
+   3. log4j.xml에 logger 추가
+   
+    * SELECT할 시 ResultSet의 내용을 테이블 형태의 로그로 찍어주는 옵션
+    
+    	<Logger name="log4jdbc.log4j2" level="info" additivity="false">
+			<MarkerFilter marker="LOG4JDBC_RESULTSETTABLE" onMatch="ACCEPT" onMismatch="DENY"/>
+			<Appender-ref ref="Console"/>
+		</Logger>
+    
+    * ResultSet을 제외한 모든 내용을 로그로 찍어주는 옵션
+    
+    	<Logger name="log4jdbc.log4j2" level="info" additivity="false">
+			<MarkerFilter marker="LOG4JDBC_RESULTSET" onMatch="DENY" onMismatch="NEUTRAL"/>
+			<Appender-ref ref="Console"/>
+		</Logger>
+		
+	* 여러가지 MarkerFilter를 적용하고 싶은 경우 
+	  (Appender를 여러개 추가하고 Appender-ref에 MarkerFilter를 추가)
+	  
+		<Appenders>
+			<Console name="ResultSetTable" target="SYSTEM_OUT">
+				<MarkerFilter marker="LOG4JDBC_RESULTSETTABLE" onMatch="ACCEPT" onMismatch="DENY"/>
+		  		<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+			</Console>
+			<Console name="Sql" target="SYSTEM_OUT">
+				<MarkerFilter marker="LOG4JDBC_SQL" onMatch="ACCEPT" onMismatch="DENY"/>
+		  		<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+			</Console>
+		</Appenders>
+		
+		<Logger name="log4jdbc.log4j2" level="info" additivity="false">
+			<MarkerFilter marker="LOG4JDBC_RESULTSET" onMatch="DENY" onMismatch="NEUTRAL"/>
+			<Appender-ref ref="ResultSetTable"/>
+			<Appender-ref ref="Sql"/>
+		</Logger>
+	  
+     

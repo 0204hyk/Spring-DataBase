@@ -1,0 +1,62 @@
+03_프로젝트 계층.txt
+
+  # 프로젝트 계층
+  
+   - 프로젝트를 구성하는 소스 코드들을 계층별로 분리한 것
+   - 화면 계층 (Presentation Layer)
+   - 비즈니스 계층 (Business Layer)
+   - 영속 계층 (Persistence Layer)
+   
+  
+  # 화면 계층
+  
+   - 화면에 보이는 코드를 작성하는 계층
+   - MVC의 V에 해당한다.
+   
+  # 비즈니스 계층
+  
+   - 고객의 요구사항(사업과 관련된 내용)을 구현하는 계층
+   - 하나의 요청(컨트롤러)이 여러 비즈니스 로직을 요구하는 경우도 있기 때문에
+     계층의 분리가 필요하다.
+  
+  # 영속 계층
+  
+   - 데이터베이스와 관련된 작업을 구현하는 계층
+   - 하나의 비즈니스 로직이 다양한 테이블에 여러 번 접근하는 경우도 있기 때문에
+     계층의 분리가 필요하다.
+     
+     
+  # 스프링 웹 프로젝트에서 각 계층에 대한 보편적인 클래스 이름 규칙
+   
+   - 비즈니스 로직 클래스 : xxxService(인터페이스), xxxServiceImpl(해당 서비스 구현 클래스)
+   - 영속 계층 클래스 : xxxMapper(Mybatis), xxxDao, xxxRepository(JPA)
+     (DB에 직접 데이터를 저장하거나 꺼내는 클래스)
+   - 데이터 클래스 : xxxVO(Getter만 보유, 읽기 전용), xxxDTO(Getter/Setter 보유)
+   
+   
+  # 웹 프로젝트 패키지 나누는 방식
+  
+   - 프로젝트 규모가 작은 경우 
+   
+     컨트롤러, 비즈니스 계층, 영속 계층, DTO를 구분할 수 있도록 패키지를 작성한다.
+     
+     ex > com.company.pizzahut.controller.PizzaOrderController 
+   		  com.company.pizzahut.mapper.PizzaOrderMapper
+   		  com.company.pizzahut.dto.PizzaOrder
+   		  com.company.pizzahut.service.PizzaOrderService
+   
+   - 프로젝트 규모가 큰 경우
+   
+     우선 비즈니스 단위별로 패키지 구분을 한 뒤 다시 내부에서 컨트롤러, 비즈니스 계층, 영속 계층, DTO를 구분한다.
+     
+     ex > com.company.pizzahut.order.controller.MainOrderController
+          com.company.pizzahut.order.mapper.MainOrderMapper
+          com.company.pizzahut.order.dto.MainMenuDTO
+          com.company.pizzahut.order.dto.SideMenuDTO
+          com.company.pizzahut.order.dto.DrinkMenuDTO
+          
+          com.company.pizzahut.member.controller.RegisterController
+          com.company.pizzahut.member.mapper.RegisterMapper
+          com.company.pizzahut.member.dto.MemberDTO
+          
+          com.company.pizzahut.reserve.controller.ReserveController
